@@ -1,14 +1,48 @@
-import { StyleSheet } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
-
+import { useEffect, useState } from 'react';
+import { fetchTopRatedMovies } from '@/api/movies';
+import MovieListItem from '@/components/MovieListItem';
+import {
+  useQuery,
+  useInfiniteQuery
+} from '@tanstack/react-query'
 export default function TabOneScreen() {
+
+  const { isPending, error, data,fetchNextPage } = useInfiniteQuery({
+    queryKey: ['movies'],
+    queryFn: fetchTopRatedMovies,
+    initialPageParam:1,
+    getNextPageParam: (lastPage, pages) => pages.length + 1,
+  })
+  if (isPending) {
+    return( 
+    <View style={{flex:1,backgroundColor:'rgba(0,0,0,0.7)',justifyContent:'center',alignItems:'center',...StyleSheet.absoluteFillObject}}>
+      <ActivityIndicator />
+    </View>)
+  }
+
+  if (error) {
+    return <Text>{error.message}</Text>
+  }
+
+  const movies=data?.pages.flat()
+  console.log(movies,'asdfjalskd1111fjaklsdjf')
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <FlatList
+      numColumns={2}
+      contentContainerStyle={{ gap: 5, padding: 5 }}
+      columnWrapperStyle={{ gap: 5 }}
+      data={movies}
+      renderItem={({item})=><MovieListItem  movies={item}/>}
+      onEndReached={()=>{
+      console.log("END REACED")
+      fetchNextPage()
+    }}
+      />
+     
     </View>
   );
 }
@@ -16,16 +50,7 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
+ 
 });

@@ -7,6 +7,9 @@ import { useEffect } from 'react';
 
 import { useColorScheme } from '@/components/useColorScheme';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useReactQueryDevTools } from '@dev-plugins/react-query';
+const queryClient = new QueryClient({});
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -45,14 +48,17 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  useReactQueryDevTools(queryClient);
   const colorScheme = useColorScheme();
 
   return (
+    <QueryClientProvider client={queryClient}>
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
       </Stack>
     </ThemeProvider>
+    </QueryClientProvider>
   );
 }
