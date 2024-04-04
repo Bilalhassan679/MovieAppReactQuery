@@ -28,15 +28,15 @@ export default function TabOneScreen() {
   }
 
   const movies=data?.pages.flat()
-  console.log(movies,'asdfjalskd1111fjaklsdjf')
   return (
     <View style={styles.container}>
       <FlatList
       numColumns={2}
       contentContainerStyle={{ gap: 5, padding: 5 }}
+
       columnWrapperStyle={{ gap: 5 }}
       data={movies}
-      renderItem={({item})=><MovieListItem  movies={item}/>}
+      renderItem={({item})=><MovieListItem  movie={item}/>}
       onEndReached={()=>{
       console.log("END REACED")
       fetchNextPage()

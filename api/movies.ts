@@ -1,4 +1,4 @@
-const apiKey =
+ const apiKey =
   'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiY2Q5OTI2YWJhM2FiYzRlYjZjNTFmY2ZhNDhkNzMyMyIsInN1YiI6IjY1ZmQ3NjkyMDQ3MzNmMDE2NGU4OTQyNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.84bPB-R9RIzo38fi89sC4PP1UJlTrpoJ_MgVdZd8aOA';
 
 const headers = {
@@ -6,8 +6,8 @@ const headers = {
   Authorization: 'Bearer ' + apiKey,
 };
 
-const fetchTopRatedMovies = async ({ pageParam }) => {
-  const url = `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${pageParam}`;
+const fetchTopRatedMovies = async ( page:any) => {
+  const url = `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${page.pageParam}`;
   const options = {
     method: 'GET',
     headers,
@@ -38,4 +38,4 @@ const fetchTopRatedMovies = async ({ pageParam }) => {
   return json;
 };
 
-export {fetchTopRatedMovies,fetchMovie}
+export {fetchTopRatedMovies,fetchMovie,apiKey}
